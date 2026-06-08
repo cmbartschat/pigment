@@ -139,8 +139,8 @@ export function ColorMixer() {
       {/* Right: result + recipe breakdown */}
       <div className="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
         <MixedResult hex={hex} recipeString={recipeString || "—"} />
-        <ShareLink recipeString={recipeString} hex={hex} />
         <RecipeChips recipe={recipe} onAdd={add} onRemove={remove} onClear={clear} />
+        <ShareLink recipeString={recipeString} hex={hex} />
       </div>
     </div>
   )
