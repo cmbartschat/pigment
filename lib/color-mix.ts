@@ -76,10 +76,13 @@ export function parseRecipe(input: string): Recipe {
   return recipe
 }
 
-/** Stringify a recipe into the canonical "r2b1w1" format (ROYGBIVWK order). */
+/** Stringify a recipe into the canonical "r2b1w1" format (ROYGBIVWK order). A single part omits the "1". */
 export function formatRecipe(recipe: Recipe): string {
   return BASE_COLORS.filter((c) => (recipe[c.key] ?? 0) > 0)
-    .map((c) => `${c.key}${recipe[c.key]}`)
+    .map((c) => {
+      const parts = recipe[c.key]!
+      return parts === 1 ? c.key : `${c.key}${parts}`
+    })
     .join("")
 }
 
