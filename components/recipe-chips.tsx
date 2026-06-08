@@ -35,12 +35,8 @@ export function RecipeChips({
         {BASE_COLORS.map((c) => {
           const parts = recipe[c.key] ?? 0
           const pct = total > 0 ? Math.round((parts / total) * 100) : 0
-          const inactive = parts === 0
           return (
-            <li
-              key={c.key}
-              className={`flex items-center gap-3 transition-opacity ${inactive ? "opacity-55" : ""}`}
-            >
+            <li key={c.key} className="flex items-center gap-3">
               <span
                 className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border/60 font-mono text-xs font-bold uppercase"
                 style={{ backgroundColor: c.hex, color: readableTextColor(c.hex) }}
