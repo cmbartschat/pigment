@@ -14,16 +14,7 @@ export function RecipeChips({
   onRemove: (key: BaseKey) => void
   onClear: () => void
 }) {
-  const active = BASE_COLORS.filter((c) => (recipe[c.key] ?? 0) > 0)
   const total = totalParts(recipe)
-
-  if (active.length === 0) {
-    return (
-      <div className="rounded-xl border border-dashed border-border bg-card/50 p-6 text-center text-sm text-muted-foreground">
-        Your palette knife is clean. Add some pigments above to start mixing.
-      </div>
-    )
-  }
 
   return (
     <div className="rounded-xl border border-border bg-card p-4">
@@ -34,17 +25,22 @@ export function RecipeChips({
         <button
           type="button"
           onClick={onClear}
-          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          disabled={total === 0}
+          className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
         >
           <X className="size-3" /> Clear
         </button>
       </div>
       <ul className="flex flex-col gap-2">
-        {active.map((c) => {
+        {BASE_COLORS.map((c) => {
           const parts = recipe[c.key] ?? 0
-          const pct = Math.round((parts / total) * 100)
+          const pct = total > 0 ? Math.round((parts / total) * 100) : 0
+          const inactive = parts === 0
           return (
-            <li key={c.key} className="flex items-center gap-3">
+            <li
+              key={c.key}
+              className={`flex items-center gap-3 transition-opacity ${inactive ? "opacity-55" : ""}`}
+            >
               <span
                 className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border/60 font-mono text-xs font-bold uppercase"
                 style={{ backgroundColor: c.hex, color: readableTextColor(c.hex) }}
@@ -64,8 +60,9 @@ export function RecipeChips({
                 <button
                   type="button"
                   onClick={() => onRemove(c.key)}
+                  disabled={parts === 0}
                   aria-label={`Remove one part ${BASE_BY_KEY[c.key].name}`}
-                  className="flex size-7 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-secondary"
+                  className="flex size-7 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
                 >
                   <Minus className="size-3.5" />
                 </button>

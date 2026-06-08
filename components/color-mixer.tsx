@@ -8,7 +8,6 @@ import {
   mixRecipe,
   parseRecipe,
 } from "@/lib/color-mix"
-import { BasePalette } from "./base-palette"
 import { RecipeChips } from "./recipe-chips"
 import { MixedResult } from "./mixed-result"
 import { ShareLink } from "./share-link"
@@ -82,8 +81,6 @@ export function ColorMixer() {
     <div className="grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)]">
       {/* Left: controls */}
       <div className="flex flex-col gap-6">
-        <BasePalette recipe={recipe} onAdd={add} onRemove={remove} />
-
         <div>
           <label
             htmlFor="recipe-input"
@@ -106,6 +103,8 @@ export function ColorMixer() {
             Letters are pigments, numbers are parts. Unknown letters are ignored; a lone letter counts as one part.
           </p>
         </div>
+
+        <RecipeChips recipe={recipe} onAdd={add} onRemove={remove} onClear={clear} />
 
         <div>
           <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">Try these</h2>
@@ -139,7 +138,6 @@ export function ColorMixer() {
       {/* Right: result + recipe breakdown */}
       <div className="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
         <MixedResult hex={hex} recipeString={recipeString || "—"} />
-        <RecipeChips recipe={recipe} onAdd={add} onRemove={remove} onClear={clear} />
         <ShareLink recipeString={recipeString} hex={hex} />
       </div>
     </div>
