@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   type BaseKey,
   type Recipe,
@@ -11,6 +11,18 @@ import {
 import { BasePalette } from "./base-palette"
 import { RecipeChips } from "./recipe-chips"
 import { MixedResult } from "./mixed-result"
+import { ShareLink } from "./share-link"
+
+function initialRecipe(): Recipe {
+  if (typeof window !== "undefined") {
+    const fromUrl = new URLSearchParams(window.location.search).get("c")
+    if (fromUrl) {
+      const parsed = parseRecipe(fromUrl)
+      if (formatRecipe(parsed)) return parsed
+    }
+  }
+  return parseRecipe("r2b1w1")
+}
 
 const PRESETS: { label: string; recipe: string }[] = [
   { label: "Deep reddish purple", recipe: "r2b1" },
@@ -22,12 +34,21 @@ const PRESETS: { label: string; recipe: string }[] = [
 ]
 
 export function ColorMixer() {
-  const [recipe, setRecipe] = useState<Recipe>(() => parseRecipe("r2b1w1"))
+  const [recipe, setRecipe] = useState<Recipe>(initialRecipe)
   // Raw text the user is typing; null means "mirror the recipe".
   const [draft, setDraft] = useState<string | null>(null)
 
   const recipeString = useMemo(() => formatRecipe(recipe), [recipe])
   const hex = useMemo(() => mixRecipe(recipe), [recipe])
+
+  // Keep the URL (?c=...) in sync so the current mix is always shareable.
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const url = new URL(window.location.href)
+    if (recipeString) url.searchParams.set("c", recipeString)
+    else url.searchParams.delete("c")
+    window.history.replaceState(null, "", url)
+  }, [recipeString])
 
   const add = (key: BaseKey) => {
     setDraft(null)
@@ -118,6 +139,7 @@ export function ColorMixer() {
       {/* Right: result + recipe breakdown */}
       <div className="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
         <MixedResult hex={hex} recipeString={recipeString || "—"} />
+        <ShareLink recipeString={recipeString} hex={hex} />
         <RecipeChips recipe={recipe} onAdd={add} onRemove={remove} onClear={clear} />
       </div>
     </div>
