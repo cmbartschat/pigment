@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { Check, Link2, Share2 } from "lucide-react"
-import { readableTextColor } from "@/lib/color-mix"
+import { useEffect, useState } from 'react'
+import { Check, Link2, Share2 } from 'lucide-react'
+import { readableTextColor } from '@/lib/color-mix'
 
 export function ShareLink({
   recipeString,
@@ -11,13 +11,13 @@ export function ShareLink({
   recipeString: string
   hex: string | null
 }) {
-  const [origin, setOrigin] = useState("")
+  const [origin, setOrigin] = useState('')
   const [copied, setCopied] = useState(false)
   const [canShare, setCanShare] = useState(false)
 
   useEffect(() => {
     setOrigin(window.location.origin + window.location.pathname)
-    setCanShare(typeof navigator !== "undefined" && !!navigator.share)
+    setCanShare(typeof navigator !== 'undefined' && !!navigator.share)
   }, [])
 
   if (!recipeString) return null
@@ -37,8 +37,8 @@ export function ShareLink({
   const nativeShare = async () => {
     try {
       await navigator.share?.({
-        title: "Palette color",
-        text: `Mixed color ${recipeString}${hex ? ` (${hex})` : ""}`,
+        title: 'Palette color',
+        text: `Mixed color ${recipeString}${hex ? ` (${hex})` : ''}`,
         url: shareUrl,
       })
     } catch {
@@ -47,17 +47,19 @@ export function ShareLink({
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="mb-2 flex items-center gap-2">
-        <Link2 className="size-3.5 text-muted-foreground" />
-        <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Share this mix</h2>
+    <div className='rounded-2xl border border-border bg-card p-4 shadow-sm'>
+      <div className='mb-2 flex items-center gap-2'>
+        <Link2 className='size-3.5 text-muted-foreground' />
+        <h2 className='font-mono text-xs uppercase tracking-widest text-muted-foreground'>
+          Share this mix
+        </h2>
       </div>
 
-      <div className="flex items-center gap-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-background px-3 py-2">
+      <div className='flex items-center gap-2'>
+        <div className='flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-background px-3 py-2'>
           {hex ? (
             <span
-              className="size-4 shrink-0 rounded-full border border-border/60"
+              className='size-4 shrink-0 rounded-full border border-border/60'
               style={{ backgroundColor: hex }}
               aria-hidden
             />
@@ -65,35 +67,35 @@ export function ShareLink({
           <input
             readOnly
             value={shareUrl}
-            onFocus={(e) => e.currentTarget.select()}
-            aria-label="Shareable link"
-            className="min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none"
+            onFocus={e => e.currentTarget.select()}
+            aria-label='Shareable link'
+            className='min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none'
           />
         </div>
 
         <button
-          type="button"
+          type='button'
           onClick={copy}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium shadow-sm transition-opacity hover:opacity-90"
+          className='inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium shadow-sm transition-opacity hover:opacity-90'
           style={
             hex
               ? { backgroundColor: hex, color: readableTextColor(hex) }
               : undefined
           }
-          aria-label="Copy share link"
+          aria-label='Copy share link'
         >
-          {copied ? <Check className="size-4" /> : <Link2 className="size-4" />}
-          {copied ? "Copied" : "Copy"}
+          {copied ? <Check className='size-4' /> : <Link2 className='size-4' />}
+          {copied ? 'Copied' : 'Copy'}
         </button>
 
         {canShare ? (
           <button
-            type="button"
+            type='button'
             onClick={nativeShare}
-            className="inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-card p-2 shadow-sm transition-colors hover:bg-secondary"
-            aria-label="Share via device"
+            className='inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-card p-2 shadow-sm transition-colors hover:bg-secondary'
+            aria-label='Share via device'
           >
-            <Share2 className="size-4" />
+            <Share2 className='size-4' />
           </button>
         ) : null}
       </div>
