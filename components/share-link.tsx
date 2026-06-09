@@ -50,26 +50,17 @@ export function ShareLink({
     <div className='rounded-2xl border border-border bg-card p-4 shadow-sm'>
       <div className='mb-2 flex items-center gap-2'>
         <Link2 className='size-3.5 text-muted-foreground' />
-        <h2 className='font-mono text-xs uppercase tracking-widest text-muted-foreground'>
-          Share this mix
-        </h2>
+        <h2 className='text-lg font-bold text-muted-foreground'>Share</h2>
       </div>
 
       <div className='flex items-center gap-2'>
         <div className='flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-background px-3 py-2'>
-          {hex ? (
-            <span
-              className='size-4 shrink-0 rounded-full border border-border/60'
-              style={{ backgroundColor: hex }}
-              aria-hidden
-            />
-          ) : null}
           <input
             readOnly
             value={shareUrl}
             onFocus={e => e.currentTarget.select()}
             aria-label='Shareable link'
-            className='min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none'
+            className='min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none'
           />
         </div>
 

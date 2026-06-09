@@ -7,10 +7,8 @@ import { hexToHsl, hexToRgb, readableTextColor } from '@/lib/color-mix'
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className='flex flex-col'>
-      <span className='font-mono text-[10px] uppercase tracking-widest opacity-70'>
-        {label}
-      </span>
-      <span className='font-mono text-sm tabular-nums'>{value}</span>
+      <span className='text-[10px] opacity-70'>{label}</span>
+      <span className='text-sm tabular-nums'>{value}</span>
     </div>
   )
 }
@@ -51,7 +49,7 @@ export function MixedResult({
         <button
           type='button'
           onClick={() => copy(recipeString, 'recipe')}
-          className='inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-mono text-sm font-semibold backdrop-blur-sm transition-opacity hover:opacity-80'
+          className='inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-semibold backdrop-blur-sm transition-opacity hover:opacity-80'
           style={{ backgroundColor: `${text}22` }}
           title='Copy recipe'
         >
@@ -68,7 +66,7 @@ export function MixedResult({
         <button
           type='button'
           onClick={() => copy(hex, 'hex')}
-          className='text-left font-mono text-2xl font-bold uppercase tracking-tight transition-opacity hover:opacity-80'
+          className='text-left text-2xl font-bold tracking-tight transition-opacity hover:opacity-80'
           title='Copy hex'
         >
           {copied === 'hex' ? 'copied!' : hex}

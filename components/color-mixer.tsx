@@ -24,12 +24,11 @@ function initialRecipe(): Recipe {
 }
 
 const PRESETS: { label: string; recipe: string }[] = [
-  { label: 'Deep reddish purple', recipe: 'r2b1' },
-  { label: 'Pale yellowish green', recipe: 'y1g2w2' },
-  { label: 'Dark blueish grey', recipe: 'b1w2k4' },
-  { label: 'Terracotta', recipe: 'o3r1w1' },
-  { label: 'Sage', recipe: 'g2y1w3k1' },
-  { label: 'Plum', recipe: 'v2r1k1' },
+  { label: 'Deep reddish purple', recipe: 'r2b' },
+  { label: 'Pale yellowish green', recipe: 'yg2w2' },
+  { label: 'Dark blueish grey', recipe: 'bw2k4' },
+  { label: 'Terracotta', recipe: 'o3rw' },
+  { label: 'Plum', recipe: 'v2rk' },
 ]
 
 export function ColorMixer() {
@@ -82,38 +81,7 @@ export function ColorMixer() {
       {/* Left: controls */}
       <div className='flex flex-col gap-6'>
         <div>
-          <label
-            htmlFor='recipe-input'
-            className='mb-2 block font-mono text-xs uppercase tracking-widest text-muted-foreground'
-          >
-            Recipe formula
-          </label>
-          <input
-            id='recipe-input'
-            value={inputValue}
-            onChange={e => onTextChange(e.target.value)}
-            onBlur={() => setDraft(null)}
-            spellCheck={false}
-            autoCapitalize='off'
-            autoCorrect='off'
-            placeholder='e.g. r2b1w1'
-            className='w-full rounded-lg border border-input bg-card px-4 py-3 font-mono text-lg lowercase tracking-wide text-foreground shadow-sm outline-none transition-shadow placeholder:text-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-ring'
-          />
-          <p className='mt-2 text-xs text-muted-foreground'>
-            Letters are pigments, numbers are parts. Unknown letters are
-            ignored; a lone letter counts as one part.
-          </p>
-        </div>
-
-        <RecipeChips
-          recipe={recipe}
-          onAdd={add}
-          onRemove={remove}
-          onClear={clear}
-        />
-
-        <div>
-          <h2 className='mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground'>
+          <h2 className='mb-3 text-lg font-bold text-muted-foreground'>
             Try these
           </h2>
           <div className='flex flex-wrap gap-2'>
@@ -134,13 +102,43 @@ export function ColorMixer() {
                     style={{ backgroundColor: swatch ?? 'transparent' }}
                     aria-hidden
                   />
-                  <span className='font-mono text-xs'>{p.recipe}</span>
+                  <span className='text-sm'>{p.recipe}</span>
                   <span className='text-muted-foreground'>{p.label}</span>
                 </button>
               )
             })}
           </div>
         </div>
+        <div className='rounded-2xl border border-border bg-card p-4 shadow-sm'>
+          <label
+            htmlFor='recipe-input'
+            className='mb-2 block text-lg font-bold text-muted-foreground'
+          >
+            Formula
+          </label>
+          <input
+            id='recipe-input'
+            value={inputValue}
+            onChange={e => onTextChange(e.target.value)}
+            onBlur={() => setDraft(null)}
+            spellCheck={false}
+            autoCapitalize='off'
+            autoCorrect='off'
+            placeholder='e.g. r2b1w1'
+            className='w-full rounded-lg bg-background border border-input px-4 py-3 text-lg lowercase tracking-wide text-foreground shadow-sm outline-none transition-shadow placeholder:text-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-ring'
+          />
+          <p className='mt-2 text-sm text-muted-foreground'>
+            Letters are pigments, numbers are ratios. Unknown letters are
+            ignored.
+          </p>
+        </div>
+
+        <RecipeChips
+          recipe={recipe}
+          onAdd={add}
+          onRemove={remove}
+          onClear={clear}
+        />
       </div>
 
       {/* Right: result + recipe breakdown */}

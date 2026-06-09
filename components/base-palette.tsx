@@ -19,10 +19,8 @@ export function BasePalette({
   return (
     <div>
       <div className='mb-3 flex items-baseline justify-between'>
-        <h2 className='font-mono text-xs uppercase tracking-widest text-muted-foreground'>
-          Palette
-        </h2>
-        <p className='text-xs text-muted-foreground'>
+        <h2 className='text-lg font-bold text-muted-foreground'>Palette</h2>
+        <p className='text-sm text-muted-foreground'>
           Click to add a part · right-click to remove
         </p>
       </div>
@@ -46,12 +44,12 @@ export function BasePalette({
                 color: readableTextColor(c.hex),
               }}
             >
-              <span className='self-start font-mono text-sm font-bold uppercase opacity-90'>
+              <span className='self-start text-sm font-bold opacity-90'>
                 {c.key}
               </span>
               {active && (
                 <span
-                  className='absolute right-1.5 top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-xs font-bold tabular-nums'
+                  className='absolute right-1.5 top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-sm font-bold tabular-nums'
                   style={{
                     backgroundColor: readableTextColor(c.hex),
                     color: c.hex,

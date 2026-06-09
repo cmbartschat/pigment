@@ -10,9 +10,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Palette — Mix colors like paint',
-  description:
-    'Express colors as a recipe of base pigments, like r2b1w1. A color picker, mixer, and text-format parser.',
+  title: 'Pigment',
+  description: 'Mix colors like paint',
   generator: 'v0.app',
   icons: {
     icon: [

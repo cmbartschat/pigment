@@ -26,14 +26,12 @@ export function RecipeChips({
   return (
     <div className='rounded-xl border border-border bg-card p-4'>
       <div className='mb-3 flex items-center justify-between'>
-        <h2 className='font-mono text-xs uppercase tracking-widest text-muted-foreground'>
-          Recipe · {total} {total === 1 ? 'part' : 'parts'}
-        </h2>
+        <h2 className='text-lg font-bold text-muted-foreground'>Recipe</h2>
         <button
           type='button'
           onClick={onClear}
           disabled={total === 0}
-          className='inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
+          className='inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
         >
           <X className='size-3' /> Clear
         </button>
@@ -45,7 +43,7 @@ export function RecipeChips({
           return (
             <li key={c.key} className='flex items-center gap-3'>
               <span
-                className='flex size-8 shrink-0 items-center justify-center rounded-md border border-border/60 font-mono text-xs font-bold uppercase'
+                className='flex size-8 shrink-0 items-center justify-center rounded-md border border-border/60 text-sm font-bold uppercase'
                 style={{
                   backgroundColor: c.hex,
                   color: readableTextColor(c.hex),
@@ -58,7 +56,7 @@ export function RecipeChips({
                   <span className='truncate text-sm font-medium'>
                     {BASE_BY_KEY[c.key].name}
                   </span>
-                  <span className='font-mono text-xs tabular-nums text-muted-foreground'>
+                  <span className='text-sm tabular-nums text-muted-foreground'>
                     {pct}%
                   </span>
                 </div>
@@ -79,7 +77,7 @@ export function RecipeChips({
                 >
                   <Minus className='size-3.5' />
                 </button>
-                <span className='w-6 text-center font-mono text-sm font-semibold tabular-nums'>
+                <span className='w-6 text-center text-sm font-semibold tabular-nums'>
                   {parts}
                 </span>
                 <button
