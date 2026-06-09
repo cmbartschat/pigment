@@ -18,8 +18,8 @@ const PRESETS: { label: string; recipe: string }[] = [
   { label: 'Deep reddish purple', recipe: 'r2b' },
   { label: 'Pale yellowish green', recipe: 'yg2w2' },
   { label: 'Dark blueish grey', recipe: 'bw2k4' },
-  { label: 'Terracotta', recipe: 'o3rw' },
-  { label: 'Plum', recipe: 'v2rk' },
+  { label: 'Terracotta', recipe: 'ro3w' },
+  { label: 'Plum', recipe: 'rv2k' },
 ]
 
 export function ColorMixer() {
