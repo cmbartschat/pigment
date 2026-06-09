@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+
 import {
   type BaseKey,
   type Recipe,
@@ -12,17 +14,6 @@ import { RecipeChips } from './recipe-chips'
 import { MixedResult } from './mixed-result'
 import { ShareLink } from './share-link'
 
-function initialRecipe(): Recipe {
-  if (typeof window !== 'undefined') {
-    const fromUrl = new URLSearchParams(window.location.search).get('c')
-    if (fromUrl) {
-      const parsed = parseRecipe(fromUrl)
-      if (formatRecipe(parsed)) return parsed
-    }
-  }
-  return parseRecipe('r2b1w1')
-}
-
 const PRESETS: { label: string; recipe: string }[] = [
   { label: 'Deep reddish purple', recipe: 'r2b' },
   { label: 'Pale yellowish green', recipe: 'yg2w2' },
@@ -32,21 +23,32 @@ const PRESETS: { label: string; recipe: string }[] = [
 ]
 
 export function ColorMixer() {
-  const [recipe, setRecipe] = useState<Recipe>(initialRecipe)
-  // Raw text the user is typing; null means "mirror the recipe".
-  const [draft, setDraft] = useState<string | null>(null)
+  const router = useRouter()
+  const urlRecipeString = useSearchParams().get('c') || ''
 
-  const recipeString = useMemo(() => formatRecipe(recipe), [recipe])
+  // draft[0] is the base recipe string we're building off. If that changes, it busts
+  // the state and resets to the URL param.
+  const [draft, setDraft] = useState<[string, string] | null>(null)
+
+  const recipeString =
+    draft?.[0] === urlRecipeString ? draft[1] : urlRecipeString
+
+  const recipe = useMemo(
+    () => (recipeString ? parseRecipe(recipeString) : {}),
+    [recipeString],
+  )
+
   const hex = useMemo(() => mixRecipe(recipe), [recipe])
 
-  // Keep the URL (?c=...) in sync so the current mix is always shareable.
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const url = new URL(window.location.href)
-    if (recipeString) url.searchParams.set('c', recipeString)
-    else url.searchParams.delete('c')
-    window.history.replaceState(null, '', url)
-  }, [recipeString])
+  const setRecipe = (update: Recipe | ((old: Recipe) => Recipe)) => {
+    const newRecipe = typeof update === 'function' ? update(recipe) : update
+    const newFormattedRecipe = formatRecipe(newRecipe)
+    const newParams = new URLSearchParams()
+    if (newFormattedRecipe) {
+      newParams.set('c', newFormattedRecipe)
+    }
+    router.replace('?' + newParams, { scroll: false })
+  }
 
   const add = (key: BaseKey) => {
     setDraft(null)
@@ -70,11 +72,8 @@ export function ColorMixer() {
   }
 
   const onTextChange = (value: string) => {
-    setDraft(value)
-    setRecipe(parseRecipe(value))
+    setDraft([urlRecipeString, value])
   }
-
-  const inputValue = draft ?? recipeString
 
   return (
     <div className='grid gap-8 lg:grid-cols-[1fr_minmax(320px,420px)]'>
@@ -118,9 +117,9 @@ export function ColorMixer() {
           </label>
           <input
             id='recipe-input'
-            value={inputValue}
+            value={recipeString}
             onChange={e => onTextChange(e.target.value)}
-            onBlur={() => setDraft(null)}
+            onBlur={() => setRecipe(recipe)}
             spellCheck={false}
             autoCapitalize='off'
             autoCorrect='off'
@@ -143,8 +142,8 @@ export function ColorMixer() {
 
       {/* Right: result + recipe breakdown */}
       <div className='flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start'>
-        <MixedResult hex={hex} recipeString={recipeString || '—'} />
-        <ShareLink recipeString={recipeString} hex={hex} />
+        <MixedResult hex={hex} />
+        <ShareLink recipe={recipe} hex={hex} />
       </div>
     </div>
   )

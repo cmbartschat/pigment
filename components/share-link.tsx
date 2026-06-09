@@ -1,28 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { Check, Link2, Share2 } from 'lucide-react'
-import { readableTextColor } from '@/lib/color-mix'
+import { formatRecipe, readableTextColor, Recipe } from '@/lib/color-mix'
+
+const ORIGIN = 'https://pigment.ribbits.org'
 
 export function ShareLink({
-  recipeString,
+  recipe,
   hex,
 }: {
-  recipeString: string
+  recipe: Recipe
   hex: string | null
 }) {
-  const [origin, setOrigin] = useState('')
   const [copied, setCopied] = useState(false)
-  const [canShare, setCanShare] = useState(false)
 
-  useEffect(() => {
-    setOrigin(window.location.origin + window.location.pathname)
-    setCanShare(typeof navigator !== 'undefined' && !!navigator.share)
-  }, [])
+  const recipeString = formatRecipe(recipe)
 
-  if (!recipeString) return null
+  if (!recipeString) {
+    return null
+  }
 
-  const shareUrl = `${origin}?c=${recipeString}`
+  const shareUrl = `${ORIGIN}?c=${recipeString}`
 
   const copy = async () => {
     try {
@@ -78,17 +77,6 @@ export function ShareLink({
           {copied ? <Check className='size-4' /> : <Link2 className='size-4' />}
           {copied ? 'Copied' : 'Copy'}
         </button>
-
-        {canShare ? (
-          <button
-            type='button'
-            onClick={nativeShare}
-            className='inline-flex shrink-0 items-center justify-center rounded-lg border border-border bg-card p-2 shadow-sm transition-colors hover:bg-secondary'
-            aria-label='Share via device'
-          >
-            <Share2 className='size-4' />
-          </button>
-        ) : null}
       </div>
     </div>
   )

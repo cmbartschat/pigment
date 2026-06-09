@@ -13,13 +13,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function MixedResult({
-  hex,
-  recipeString,
-}: {
-  hex: string | null
-  recipeString: string
-}) {
+export function MixedResult({ hex }: { hex: string | null }) {
   const [copied, setCopied] = useState<string | null>(null)
 
   const copy = (text: string, id: string) => {
@@ -42,26 +36,9 @@ export function MixedResult({
 
   return (
     <div
-      className='relative flex aspect-[4/3] w-full flex-col justify-between rounded-2xl border border-border/40 p-5 shadow-lg transition-colors'
+      className='relative flex aspect-[4/3] w-full flex-col justify-end rounded-2xl border border-border/40 p-5 shadow-lg transition-colors'
       style={{ backgroundColor: hex, color: text }}
     >
-      <div className='flex items-start justify-between'>
-        <button
-          type='button'
-          onClick={() => copy(recipeString, 'recipe')}
-          className='inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-semibold backdrop-blur-sm transition-opacity hover:opacity-80'
-          style={{ backgroundColor: `${text}22` }}
-          title='Copy recipe'
-        >
-          {copied === 'recipe' ? (
-            <Check className='size-3.5' />
-          ) : (
-            <Copy className='size-3.5' />
-          )}
-          {recipeString}
-        </button>
-      </div>
-
       <div className='flex items-end justify-between gap-4'>
         <button
           type='button'
