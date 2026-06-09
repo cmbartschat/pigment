@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 import {
   type BaseKey,
@@ -23,7 +23,6 @@ const PRESETS: { label: string; recipe: string }[] = [
 ]
 
 export function ColorMixer() {
-  const router = useRouter()
   const urlRecipeString = useSearchParams().get('c') || ''
 
   // draft[0] is the base recipe string we're building off. If that changes, it busts
@@ -47,7 +46,7 @@ export function ColorMixer() {
     if (newFormattedRecipe) {
       newParams.set('c', newFormattedRecipe)
     }
-    router.replace('?' + newParams, { scroll: false })
+    window.history.replaceState(null, '', '?' + newParams)
   }
 
   const add = (key: BaseKey) => {
