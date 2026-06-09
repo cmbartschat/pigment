@@ -1,5 +1,7 @@
 import { ColorMixer } from '@/components/color-mixer'
 
+export const dynamic = 'force-dynamic'
+
 export default function Page() {
   return (
     <main className='mx-auto min-h-screen w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-14'>
